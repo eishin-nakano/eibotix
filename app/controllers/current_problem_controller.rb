@@ -1,0 +1,3 @@
+class CurrentProblemController < ApplicationController
+    
+end
