@@ -49,3 +49,4 @@ end
 # Added Gem
 gem 'line-bot-api'
 gem 'dotenv-rails'
+gem 'ruby-openai'
