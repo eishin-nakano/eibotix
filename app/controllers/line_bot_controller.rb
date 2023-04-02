@@ -27,15 +27,6 @@ class LineBotController < ApplicationController
         }
     end
 
-    def choose_random_flashcard
-        flashcard_count = Flashcard.last.id
-        flashcard = Flashcard.find(rand(1..flashcard_count))
-
-        @current_user.update_current_problem(flashcard)
-
-        return flashcard
-    end
-
     def create_reply(recieved_message)
         if recieved_message == "問題を出して"
             problem = choose_random_flashcard
@@ -54,6 +45,15 @@ class LineBotController < ApplicationController
         }
 
         return message
+    end
+
+    def choose_random_flashcard
+        flashcard_count = Flashcard.last.id
+        flashcard = Flashcard.find(rand(1..flashcard_count))
+
+        @current_user.update_current_problem(flashcard)
+
+        return flashcard
     end
 
     def set_current_user(line_user_id)
