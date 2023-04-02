@@ -28,15 +28,29 @@ class LineBotController < ApplicationController
     end
 
     def create_reply(recieved_message)
-        if recieved_message == "問題を出して"
-            problem = choose_random_flashcard
-
-            text = problem.japanese
-        elsif recieved_message == "答えを教えて"
-            text = @current_user.solving_problem? ? @current_user.show_answer : "先に「問題を出して」と言ってみてね！"
-            @current_user.finish_problem
+        if @current_user.upload_status == NOW_UPLOADING
+            begin
+                upload_problems(recieved_message)
+                text = "アップロード完了"
+                @current_user.update(upload_status: UPLOAD_CONPLEATED)
+            rescue => exception
+                text = "Faild to uplpad data. Please contact eishin."
+                @current_user.update(upload_status: UPLOAD_CONPLEATED)
+            end
         else
-            text =  "問題を出してほしいときは、「問題をだして」と言ってね！"   
+            if recieved_message == "問題を出して"
+                problem = choose_random_flashcard
+
+                text = problem.japanese
+            elsif recieved_message == "答えを教えて"
+                text = @current_user.solving_problem? ? @current_user.show_answer : "先に「問題を出して」と言ってみてね！"
+                @current_user.finish_problem
+            elsif recieved_message == "新規追加"
+                text = "先生からのメッセージを送ってね！"
+                @current_user.update(upload_status: NOW_UPLOADING)
+            else
+                text =  "問題を出してほしいときは、「問題を出して」と言ってね！"
+            end
         end
 
         message = {
@@ -60,4 +74,49 @@ class LineBotController < ApplicationController
         @current_user = User.find_by(line_user_id: line_user_id) || User.create!(line_user_id: line_user_id)
     end
 
+    def create_new_problems(problems_str)
+        problems = problems_str.split("/")
+
+        puts "problems:"
+        puts problems
+
+        prm_eng = nil
+        prm_jap = nil
+
+        problems.each_with_index do | sentence, i |
+            puts i
+            if i % 2 == 0
+                prm_eng = sentence
+            else
+                prm_jap = sentence
+                param = {english: prm_eng, japanese: prm_jap}
+
+                begin
+                    Flashcard.create!(param)
+                rescue => exception
+                    puts "Create Failed"
+                end
+            end
+        end
+    end
+
+    def answer_from_chatgpt(content)
+        client = OpenAI::Client.new(access_token: ENV["OPENAI_API_KEY"])
+        message_for_gpt = '文章をスラッシュ区切りの文字列としてまとめてください。はじめに概要と条件と出力例を説明します。 概要: 英語の文章に続いて、その文章に対応する日本語の文章が括弧内に書かれています 条件①: 英語とそれに対応する日本語を1つの配列に順番に格納してください。条件②: #から始まる文章はコメントですので配列には含めないでください。 条件③: 配列の結果のみをレスポンスとしてください。説明書きは不要です。 出力例: I’m on my way home/家に向かっています/I drank alcohol with my friends from high school/高校の友達とお酒を飲みました/I had some assignments to do for the business class/ビジネスの授業の課題がありました 以下の文章を形式にそってまとめてください。' + content
+
+        puts message_for_gpt
+
+        response = client.chat(
+        parameters: {
+            model: "gpt-3.5-turbo",
+            messages: [{ role: "user", content: message_for_gpt }],
+        })
+        puts response.dig("choices", 0, "message", "content")
+        return response.dig("choices", 0, "message", "content")
+    end
+
+    def upload_problems(content)
+        problems_str = answer_from_chatgpt(content)
+        create_new_problems(problems_str)
+    end
 end
