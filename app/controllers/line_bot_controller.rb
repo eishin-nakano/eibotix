@@ -40,16 +40,18 @@ class LineBotController < ApplicationController
         if recieved_message == "問題を出して"
             problem = choose_random_flashcard
 
-            message = {
-                type: "text",
-                text: problemjapanese
-            }
+            text = problem.japanese
+        elsif recieved_message == "答えを教えて"
+            text = @current_user.solving_problem? ? @current_user.show_answer : "先に「問題を出して」と言ってみてね！"
+            @current_user.finish_problem
         else
-            message = {
-                type: "text",
-                text: "問題を出してほしいときは、「問題をだして」と言ってね！"
-            }
+            text =  "問題を出してほしいときは、「問題をだして」と言ってね！"   
         end
+
+        message = {
+            type: "text",
+            text: text
+        }
 
         return message
     end
