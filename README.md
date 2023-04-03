@@ -17,7 +17,7 @@ ENGLISH GYMでは、SLトレーニングと呼ばれる、瞬間英作文を鍛�
 ENGLISH GYMの講師の先生からもらったFBをそのまま送るだけで、出題してほしい文章が新規追加できます！  
 余計なことを考えることなくコピペして、そのままおくるだけ！
 
-<img src="app/assets/images/README-1.jpg">
+<img width="500" alt="localhost3000" src="https://user-images.githubusercontent.com/104289147/229550893-2d2e6fd5-b6be-4dec-b459-b7e451d3fd06.jpg">
 
 ① 「新規追加」と送信  
 ② 続けてENGLISH GYMの先生からのFBを送信  
@@ -27,7 +27,7 @@ ENGLISH GYMの講師の先生からもらったFBをそのまま送るだけで�
 eibotixが君の登録した文章からランダムに出題してくれます！  
 分からなかったら答えを教えてくれる！  
 
-<img src="app/assets/images/README-2.jpg">
+<img width="500" alt="localhost3000" src="https://user-images.githubusercontent.com/104289147/229550967-8bf60880-9949-434b-851f-c0dcf38cd1cd.jpg">
 
 ① 「問題を出して」と送信  
 ② 分からなかったら「答えを教えて」と送信
@@ -60,7 +60,7 @@ $ rails s
 ```
 localhostにアクセスし、railsアプリケーションが立ち上がっていることを確認してください。
 
-<img src="app/assets/images/localhost3000.png">
+<img width="500" alt="localhost3000" src="https://user-images.githubusercontent.com/104289147/229550792-0f448cd0-388c-4a1d-ad4a-85cd08c54bde.png">
 
 rails applicationが立ち上がっているポート番号をngrokにForwardingしてもらいます。例えば3000なら、
 ```
@@ -69,7 +69,7 @@ $ ngrok http 3000
 
 すると管理画面が立ち上がりますので、Forwardingの横にあるURLをコピーしておきます。
 
-<img src="app/assets/images/ngrok.png">
+<img width="500" alt="ngrok" src="https://user-images.githubusercontent.com/104289147/229551063-6fd7f645-7c5d-4e96-8bd9-943fc193fa65.png">
 
 <a href="https://developers.line.biz/console/">LINE Developersコンソール</a>に行きます。
 
@@ -81,7 +81,7 @@ $ ngrok http 3000
 ここまできたら準備完了です。
 Botに話しかけてみましょう。
 
-<img src="app/assets/images/README-3.jpg">
+<img width="500" alt="localhost3000" src="https://user-images.githubusercontent.com/104289147/229551121-6a2cd20e-1254-4c4b-aa44-f3c29a0da451.jpg">
 
 ### リソース配布
 #### 問題集
