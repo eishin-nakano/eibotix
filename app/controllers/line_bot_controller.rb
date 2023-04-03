@@ -37,6 +37,13 @@ class LineBotController < ApplicationController
                 text = "Faild to uplpad data. Please contact eishin."
                 @current_user.update(upload_status: UPLOAD_CONPLEATED)
             end
+        elsif @current_user.flashcards.empty?
+            if recieved_message == "新規追加"
+                text = "先生からのメッセージを送ってね！"
+                @current_user.update(upload_status: NOW_UPLOADING)
+            else
+                text = "「新規追加」から問題を追加してね！"
+            end
         else
             if recieved_message == "問題を出して"
                 problem = choose_random_flashcard
@@ -62,8 +69,9 @@ class LineBotController < ApplicationController
     end
 
     def choose_random_flashcard
-        flashcard_count = Flashcard.last.id
-        flashcard = Flashcard.find(rand(1..flashcard_count))
+        flashcards = @current_user.flashcards
+        flashcard_count = flashcards.count
+        flashcard = flashcards[rand(0..flashcard_count-1)]
 
         @current_user.update_current_problem(flashcard)
 
@@ -84,17 +92,17 @@ class LineBotController < ApplicationController
         prm_jap = nil
 
         problems.each_with_index do | sentence, i |
-            puts i
             if i % 2 == 0
                 prm_eng = sentence
             else
                 prm_jap = sentence
-                param = {english: prm_eng, japanese: prm_jap}
+                param = {english: prm_eng, japanese: prm_jap, user_id: @current_user.id}
 
                 begin
                     Flashcard.create!(param)
                 rescue => exception
                     puts "Create Failed"
+                    return false
                 end
             end
         end

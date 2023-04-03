@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_02_050448) do
+ActiveRecord::Schema[7.0].define(version: 2023_04_03_131252) do
   create_table "current_problems", force: :cascade do |t|
     t.integer "user_id"
     t.integer "flashcard_id"
@@ -23,6 +23,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_02_050448) do
     t.string "japanese"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "user_id"
   end
 
   create_table "users", force: :cascade do |t|
