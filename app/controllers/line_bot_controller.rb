@@ -102,7 +102,7 @@ class LineBotController < ApplicationController
 
     def answer_from_chatgpt(content)
         client = OpenAI::Client.new(access_token: ENV["OPENAI_API_KEY"])
-        message_for_gpt = '文章をスラッシュ区切りの文字列としてまとめてください。はじめに概要と条件と出力例を説明します。 概要: 英語の文章に続いて、その文章に対応する日本語の文章が括弧内に書かれています 条件①: 英語とそれに対応する日本語を1つの配列に順番に格納してください。条件②: #から始まる文章はコメントですので配列には含めないでください。 条件③: 配列の結果のみをレスポンスとしてください。説明書きは不要です。 出力例: I’m on my way home/家に向かっています/I drank alcohol with my friends from high school/高校の友達とお酒を飲みました/I had some assignments to do for the business class/ビジネスの授業の課題がありました 以下の文章を形式にそってまとめてください。' + content
+        message_for_gpt = '文章をスラッシュ区切りの文字列としてまとめてください。はじめに概要と条件と出力例を説明します。 概要: 英語の文章に続いて、その文章に対応する日本語の文章が括弧内に書かれています 条件①: 英語とそれに対応する日本語を1つの配列に順番に格納してください。つまり、英語と日本語が交互になるようにしてください。条件②: #から始まる文章はコメントですので配列には含めないでください。 条件③: 配列の結果のみをレスポンスとしてください。説明書きは不要です。 出力例: I’m on my way home/家に向かっています/I drank alcohol with my friends from high school/高校の友達とお酒を飲みました/I had some assignments to do for the business class/ビジネスの授業の課題がありました 以下の文章を形式にそってまとめてください。' + content
 
         puts message_for_gpt
 
