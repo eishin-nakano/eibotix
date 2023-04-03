@@ -54,6 +54,17 @@ ChatGPT-API version: gpt-3.5-turbo
 ```
 $ git clone git@github.com:eishin-nakano/eibotix.git
 ```
+そしてbundle installを実行してください。
+```
+$ bundle install
+```
+はじめにクローンしたディレクトリに環境変数を設定します。
+`/.env` ファイルに前準備で取得した各変数を設定してください。
+```
+LINE_CHANNEL_SECRET=＜取得したLINEチャネルシークレット＞
+LINE_CHANNEL_TOKEN=＜取得したLINEチャネルアクセストークン＞
+OPENAI_API_KEY=＜ChatGPTアクセストークン＞
+```
 次にご自身の環境でローカルサーバーを立ち上げてください。
 ```
 $ rails s
