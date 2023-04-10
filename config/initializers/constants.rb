@@ -1,3 +1,4 @@
-# user.upload_status
-UPLOAD_CONPLEATED = 0
-NOW_UPLOADING     = 1
+# user.status
+DEFAULT = 0
+NOW_UPLOADING = 1
+SOLVING_PROBLEM = 2

@@ -28,19 +28,19 @@ class LineBotController < ApplicationController
     end
 
     def create_reply(recieved_message)
-        if @current_user.upload_status == NOW_UPLOADING
+        if @current_user.status == NOW_UPLOADING
             begin
                 upload_problems(recieved_message)
                 text = "アップロード完了"
-                @current_user.update(upload_status: UPLOAD_CONPLEATED)
+                @current_user.update(status: DEFAULT)
             rescue => exception
                 text = "Faild to uplpad data. Please contact eishin."
-                @current_user.update(upload_status: UPLOAD_CONPLEATED)
+                @current_user.update(status: DEFAULT)
             end
         elsif @current_user.flashcards.empty?
             if recieved_message == "新規追加"
                 text = "先生からのメッセージを送ってね！"
-                @current_user.update(upload_status: NOW_UPLOADING)
+                @current_user.update(status: NOW_UPLOADING)
             else
                 text = "「新規追加」から問題を追加してね！"
             end
