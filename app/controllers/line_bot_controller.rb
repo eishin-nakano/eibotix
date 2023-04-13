@@ -137,9 +137,13 @@ class LineBotController < ApplicationController
             else
                 prm_jap = sentence
                 param = {english: prm_eng, japanese: prm_jap, user_id: @current_user.id}
-
                 begin
-                    Flashcard.create!(param)
+                    new_card = Flashcard.new(param)
+                    if new_card.check_languages
+                        new_card.save
+                    else
+                        raise "not appropriate for the languages of cards -> english: #{new_card.english}, japanese: #{new_card.japanese}"
+                    end
                 rescue => exception
                     puts "Create Failed"
                     return false
