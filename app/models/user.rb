@@ -31,14 +31,17 @@ class User < ApplicationRecord
     end
 
     def create_transcript
+        daily_problem = learning_histories.where(created_at: Time.now.beginning_of_day..Time.now.end_of_day)
+        weekly_problem = learning_histories.where(created_at: Time.now.beginning_of_week..Time.now.end_of_week)
+
         transcript = {
             "dayly": {
-                "worked_problem_count": learning_histories.where(created_at: Time.now.beginning_of_day..Time.now.end_of_day).count,
-                "correct_problem_count": learning_histories.where(created_at: Time.now.beginning_of_day..Time.now.end_of_day, correct: CORRECT).count
+                "worked_problem_count": daily_problem.empty? ? 0 : daily_problem.count,
+                "correct_problem_count": daily_problem.empty? ? 0 : daily_problem.where(correct: CORRECT).count
             },
             "weekly": {
-                "worked_problem_count": learning_histories.where(created_at: Time.now.beginning_of_week..Time.now.end_of_week).count,
-                "correct_problem_count": learning_histories.where(created_at: Time.now.beginning_of_week..Time.now.end_of_week, correct: CORRECT).count
+                "worked_problem_count": weekly_problem.empty? ? 0 : weekly_problem.count,
+                "correct_problem_count": weekly_problem.where(correct: CORRECT).empty? ? 0 : weekly_problem.where(correct: CORRECT).count
             }
         }
 

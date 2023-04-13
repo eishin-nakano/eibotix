@@ -57,7 +57,7 @@ class LineBotController < ApplicationController
             elsif recieved_message == "成績確認"
                 transcript = @current_user.create_transcript
                 p transcript
-                text = "■ #{@current_user.nickname}の成績表 ■\n\n" +
+                text = "■ #{@current_user.nickname.nil? ? "あなた" : @current_user.niuckname } の成績表 ■\n\n" +
                         "本日の成績\n" +
                         "問題数： #{transcript[:dayly][:worked_problem_count]}\n" +
                         "正解数： #{transcript[:dayly][:correct_problem_count]}\n" +
