@@ -97,7 +97,7 @@ class LineBotController < ApplicationController
                 @current_user.set_status(DEFAULT)
                 text += "\n\n正解:\n#{@current_user.show_answer}"
             else
-                text = "答えを確認するには「答えを見る」と言ってね！"
+                text = "正解のステータスを登録するか、答えを確認するには「答えを見る」と言ってね！"
             end
         end
 
