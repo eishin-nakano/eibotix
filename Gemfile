@@ -50,3 +50,4 @@ end
 gem 'line-bot-api'
 gem 'dotenv-rails'
 gem 'ruby-openai'
+gem 'slim-rails'

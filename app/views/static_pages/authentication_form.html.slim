@@ -1,0 +1,12 @@
+/ The static page that contains one authentication form.
+doctype html
+html
+  head
+    title 認証ページ | English Gym
+  body
+    h1 認証
+    p フォームに生徒から送られてきた認証コードを入力してください。
+    = form_with url: '/', method: :post do |form|
+      = form.label :name, '認証コード：'
+      = form.text_field :aunthentication_code, required: true
+      = form.submit '認証'
