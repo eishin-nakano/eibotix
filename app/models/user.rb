@@ -21,4 +21,27 @@ class User < ApplicationRecord
     def show_answer
         Flashcard.find(self.current_problem.flashcard_id).english
     end
+
+    def set_status(status)
+        self.update(status: status)
+    end
+
+    def make_history(status)
+        LearningHistory.create(user_id: self.id, flashcard_id: current_problem.flashcard_id, correct: status)
+    end
+
+    def create_transcript
+        transcript = {
+            "dayly": {
+                "worked_problem_count": learning_histories.where(created_at: Time.now.beginning_of_day..Time.now.end_of_day).count,
+                "correct_problem_count": learning_histories.where(created_at: Time.now.beginning_of_day..Time.now.end_of_day, correct: CORRECT).count
+            },
+            "weekly": {
+                "worked_problem_count": learning_histories.where(created_at: Time.now.beginning_of_week..Time.now.end_of_week).count,
+                "correct_problem_count": learning_histories.where(created_at: Time.now.beginning_of_week..Time.now.end_of_week, correct: CORRECT).count
+            }
+        }
+
+        return transcript
+    end
 end
