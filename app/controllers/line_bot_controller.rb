@@ -10,9 +10,14 @@ class LineBotController < ApplicationController
                 when Line::Bot::Event::MessageType::Text
                     set_current_user(event['source']['userId'])
 
-                    reply = create_reply(event.message["text"])
+                    if @current_user.status != WAITING_FOR_REGISTRATION
+                        reply = create_reply(event.message["text"])
+                    else
+                        @current_user.update(confirmation_token: SecureRandom.urlsafe_base64(6))
+                        reply = create_reply_for_registration
+                    end
+                    p reply
                     client.reply_message(event['replyToken'], reply)
-
                 end
             end
         end
@@ -59,15 +64,15 @@ class LineBotController < ApplicationController
                 p transcript
                 text = "■ #{@current_user.nickname.nil? ? "あなた" : @current_user.niuckname } の成績表 ■\n\n" +
                         "本日の成績\n" +
-                        "問題数： #{transcript[:dayly][:worked_problem_count]}\n" +
                         "正解数： #{transcript[:dayly][:correct_problem_count]}\n" +
+                        "問題数： #{transcript[:dayly][:worked_problem_count]}\n" +
                         "------------------\n" +
-                        "正答率： #{transcript[:dayly][:correct_problem_count] / transcript[:dayly][:worked_problem_count] * 100}%\n\n" +
+                        "正答率： #{transcript[:dayly][:correct_problem_count] * 100 / transcript[:dayly][:worked_problem_count] }%\n\n" +
                         "今週の成績\n" +
-                        "問題数： #{transcript[:weekly][:worked_problem_count]}\n" +
                         "正解数： #{transcript[:weekly][:correct_problem_count]}\n" +
+                        "問題数： #{transcript[:weekly][:worked_problem_count]}\n" +
                         "------------------\n" +
-                        "正答率： #{transcript[:weekly][:correct_problem_count] / transcript[:weekly][:worked_problem_count] * 100}%\n\n"
+                        "正答率： #{transcript[:weekly][:correct_problem_count]  * 100 / transcript[:weekly][:worked_problem_count]}%"
                        
             else
                 text =  "問題を出してほしいときは、「問題を出して」と言ってね！"
@@ -109,6 +114,21 @@ class LineBotController < ApplicationController
         return message
     end
 
+    def create_reply_for_registration
+        text = "はじめまして！ei単語くんはENGLISH GYMの単語学習アプリです！\n\n" +
+                "まずは下の認証コードを管理者に送ってください！\n\n" +
+                "------------------------\n" +
+                "#{@current_user.confirmation_token}\n" +
+                "------------------------\n\n" +
+                "管理者に承認されたら僕がお知らせするから、ちょっとまっていてね！"
+        
+        message = {
+            type: "text",
+            text: text
+        }
+        return message
+    end
+
     def choose_random_flashcard
         flashcards = @current_user.flashcards
         flashcard_count = flashcards.count
@@ -118,8 +138,15 @@ class LineBotController < ApplicationController
     end
 
     def set_current_user(line_user_id)
-        @current_user = User.find_by(line_user_id: line_user_id) || User.create!(line_user_id: line_user_id)
-        @current_user.set_status(DEFAULT) if @current_user.status.nil?
+        user = User.find_by(line_user_id: line_user_id)
+        
+        if user.present?
+            @current_user = user
+            @current_user.set_status(DEFAULT) if @current_user.status.nil?
+        else
+            @current_user = User.create!(line_user_id: line_user_id, confirmation_token: SecureRandom.urlsafe_base64(6), status: WAIGHTING_FOR_REGISTRATION)
+        end
+
     end
 
     def create_new_problems(problems_str)
