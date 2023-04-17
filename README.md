@@ -2,7 +2,10 @@
 
 ## はじめに
 Repositoryを訪れてくれてありがとうございます！
-eibotixは ENGLISH GYMの受講生であるeishin-nakanoが運営するENGLISH GYM受講生向け、自分専用の英文章アプリが作れる英文章LINE Botです！（Now Cntinue to be Developing...）  
+eibotixは ENGLISH GYMの受講生であるeishin-nakanoが運営するENGLISH GYM受講生向け、自分専用の単語帳が作れる瞬間英作文用LINE Botです！(開発中)
+  
+<img width="200" alt="UI" src="https://user-images.githubusercontent.com/104289147/232451681-8cf13882-4d78-46f7-952b-94ef975bbe4e.png">
+  
 
 (一般の方へ)  
 ENGLISH GYMでは、SLトレーニングと呼ばれる、瞬間英作文を鍛えるトレーニングメソッドが導入されています。
@@ -19,7 +22,7 @@ ENGLISH GYMの講師の先生からもらったFBをそのまま送るだけで�
 
 <img width="500" alt="localhost3000" src="https://user-images.githubusercontent.com/104289147/229550893-2d2e6fd5-b6be-4dec-b459-b7e451d3fd06.jpg">
 
-① 「新規追加」と送信  
+① 「問題登録」をクリック  
 ② 続けてENGLISH GYMの先生からのFBを送信  
 ③ 「アップロード完了」と表示されたらOK！(もしFaild to uplpad dataと表示されたらeishin-nakanoにまで直接ご連絡ください。)
 
@@ -29,13 +32,27 @@ eibotixが君の登録した文章からランダムに出題してくれます�
 
 <img width="500" alt="localhost3000" src="https://user-images.githubusercontent.com/104289147/229550967-8bf60880-9949-434b-851f-c0dcf38cd1cd.jpg">
 
-① 「問題を出して」と送信  
-② 分からなかったら「答えを教えて」と送信
+① 「次の問題」をクリック  
+② 声に出して英作文をしてみよう！
+③ 「正解確認」をクリックして正解を確認！
+④ 正解できたら「正解」を、不正解だったら「不正解」をクリックしよう！
+
+### 成績確認
+<img width="500" alt="transcript" src="https://user-images.githubusercontent.com/104289147/232453063-49122a08-3036-4ab8-bb94-85d16c1219d0.png">
+
+① 「成績確認」をクリック!  
+② ここまでの成績を確認できるよ！
+
+### 復習機能
+開発中
+
+### オリジナル問題機能
+開発中
 
 ## eibotixの使い方
 ### Botを友達追加して動かす
-現在まだサポートされておりません。  
-4月中旬に公開予定です。
+現在サポートされていません。  
+(2023.04追記) 5/1にEnglish Gym公認のLINE Botとして正式リリースが決定！
 
 ### ローカルで動かす
 #### バージョン
