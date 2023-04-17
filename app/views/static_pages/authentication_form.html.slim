@@ -1,12 +1,23 @@
-/ The static page that contains one authentication form.
 doctype html
 html
   head
     title 認証ページ | English Gym
-  body
-    h1 認証
-    p フォームに生徒から送られてきた認証コードを入力してください。
-    = form_with url: '/', method: :post do |form|
-      = form.label :name, '認証コード：'
-      = form.text_field :aunthentication_code, required: true
-      = form.submit '認証'
+  body (style="background-color: #F5F5F5; font-family: Arial, sans-serif;")
+    h1 (style="text-align: center; color: #333333;")
+      | 認証
+    p (style="text-align: center; font-size: 16px; color: #666666;")
+      | フォームに生徒から送られてきた認証IDを入力してください。
+    form (style="margin: 0 auto; max-width: 300px; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 40px; background-color: #FFFFFF; box-shadow: 0px 2px 10px 0px rgba(0,0,0,0.2); border-radius: 5px; gap: 5px;")
+      = form_with path: authentication_path, method: :post do |form|
+        = form.label :name, '管理者ユーザー名 :'
+        = form.text_field :admin_name, required: true
+        = form.label :name, '管理者パスワード :'
+        = form.text_field :admin_password, required: true
+        = form.label :name, '認証トークン :'
+        = form.text_field :confirmation_token, required: true
+        = form.submit '認証', style: "background-color: #4CAF50; border: none; color: #FFFFFF; border-radius: 5px; font-size: 16px; cursor: pointer; width: 40%; margin-top: 25px; padding: 5px 0;"
+    
+    h2 (style="text-align: center; font-size: 16px; color: #4CAF50; margin-top: 20px;")
+      = flash[:notice]
+    h2 (style="text-align: center; font-size: 16px; color: #F44336; margin-top: 20px;")
+      = flash[:alert]

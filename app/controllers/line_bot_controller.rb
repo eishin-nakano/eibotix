@@ -34,11 +34,16 @@ class LineBotController < ApplicationController
 
     def create_reply(recieved_message)
         if @current_user.status == NOW_UPLOADING
-            begin
-                upload_problems(recieved_message)
-                text = "アップロード完了"
-            rescue => exception
-                text = "Faild to uplpad data. Please contact eishin."
+
+            if recieved_message == "新規追加"
+                text = "キャンセルしました"
+            else
+                begin
+                    upload_problems(recieved_message)
+                    text = "アップロード完了"
+                rescue => exception
+                    text = "Faild to uplpad data. Please contact eishin."
+                end
             end
 
             @current_user.set_status(DEFAULT)
